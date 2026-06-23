@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>設定 - 美編軟體</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="settings">
+    <h1>管理設定</h1>
+    <div class="field">
+      <label>中央紙張顏色</label>
+      <input type="color" id="paperColor">
+    </div>
+    <div class="field">
+      <label>文字/符號 顏色</label>
+      <input type="color" id="textColor">
+    </div>
+    <div class="actions">
+      <button id="saveBtn" class="btn">儲存</button>
+      <button id="resetBtn" class="btn ghost">還原預設</button>
+      <a class="btn" href="index.html">回主畫面</a>
+    </div>
+  </div>
+
+  <script>
+    const defaults = {paperColor: '#ffd7e6', textColor: '#000000'};
+    const paperColorInput = document.getElementById('paperColor');
+    const textColorInput = document.getElementById('textColor');
+
+    function load() {
+      const pc = localStorage.getItem('paperColor') || defaults.paperColor;
+      const tc = localStorage.getItem('textColor') || defaults.textColor;
+      paperColorInput.value = pc;
+      textColorInput.value = tc;
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', ()=>{
+      localStorage.setItem('paperColor', paperColorInput.value);
+      localStorage.setItem('textColor', textColorInput.value);
+      alert('已儲存設定');
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      localStorage.removeItem('paperColor');
+      localStorage.removeItem('textColor');
+      load();
+      alert('已還原預設');
+    });
+
+    load();
+  </script>
+</body>
+</html>
