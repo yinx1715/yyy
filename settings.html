@@ -17,6 +17,11 @@
       <label>文字/符號 顏色</label>
       <input type="color" id="textColor">
     </div>
+    <div class="field">
+      <label>上傳背景照片</label>
+      <input type="file" id="backgroundImage" accept="image/*">
+    </div>
+    <div class="hint">選擇圖片後，背景會自動替換為上傳照片；若選擇新的紙張顏色，會用該顏色覆蓋背景。</div>
     <div class="actions">
       <button id="saveBtn" class="btn">儲存</button>
       <button id="resetBtn" class="btn ghost">還原預設</button>
@@ -28,13 +33,26 @@
     const defaults = {paperColor: '#ffd7e6', textColor: '#000000'};
     const paperColorInput = document.getElementById('paperColor');
     const textColorInput = document.getElementById('textColor');
+    const backgroundImageInput = document.getElementById('backgroundImage');
 
     function load() {
       const pc = localStorage.getItem('paperColor') || defaults.paperColor;
       const tc = localStorage.getItem('textColor') || defaults.textColor;
       paperColorInput.value = pc;
       textColorInput.value = tc;
+      backgroundImageInput.value = '';
     }
+
+    backgroundImageInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        localStorage.setItem('backgroundImage', reader.result);
+        alert('背景照片已上傳，前往主畫面即可看到效果。');
+      };
+      reader.readAsDataURL(file);
+    });
 
     document.getElementById('saveBtn').addEventListener('click', ()=>{
       localStorage.setItem('paperColor', paperColorInput.value);
@@ -45,6 +63,7 @@
     document.getElementById('resetBtn').addEventListener('click', ()=>{
       localStorage.removeItem('paperColor');
       localStorage.removeItem('textColor');
+      localStorage.removeItem('backgroundImage');
       load();
       alert('已還原預設');
     });

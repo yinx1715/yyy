@@ -6,7 +6,12 @@ const defaults = {paperColor: '#ffd7e6', textColor: '#000000'};
 function applySettings(){
   const pc = localStorage.getItem('paperColor') || defaults.paperColor;
   const tc = localStorage.getItem('textColor') || defaults.textColor;
-  paper.style.background = pc;
+  const bgImage = localStorage.getItem('backgroundImage');
+  if (bgImage) {
+    paper.style.background = `url(${bgImage}) center/cover no-repeat`;
+  } else {
+    paper.style.background = pc;
+  }
   // also set CSS vars so placed items inherit
   document.documentElement.style.setProperty('--paper-default', pc);
   document.documentElement.style.setProperty('--text-default', tc);
